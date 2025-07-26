@@ -11,7 +11,7 @@
         <header>
             <h1>Vocabulary Learning</h1>
             <nav>
-                <button id="addWordBtn" class="nav-btn active">Add Word</button>
+                <button id="addWordBtn" class="nav-btn">Add Word</button>
                 <button id="dailyWordsBtn" class="nav-btn">Daily Words</button>
                 <button id="reviewBtn" class="nav-btn">Review</button>
                 <button id="recentWordsBtn" class="nav-btn">Recent Words</button>
@@ -22,7 +22,7 @@
 
         <main>
             <!-- Add Word Section -->
-            <section id="addWordSection" class="section active">
+            <section id="addWordSection" class="section">
                 <h2>Add New Vocabulary</h2>
                 <form id="vocabularyForm">
                     <div class="form-group">
@@ -84,6 +84,33 @@
         </main>
     </div>
 
+    <script>
+        // Initialize UI state immediately to prevent flash
+        (function() {
+            const savedSection = localStorage.getItem('currentSection') || 'addWord';
+            const sectionMap = {
+                'addWord': 'addWordSection',
+                'dailyWords': 'dailyWordsSection',
+                'review': 'reviewSection',
+                'recentWords': 'recentWordsSection',
+                'allWords': 'allWordsSection'
+            };
+            const navBtnMap = {
+                'addWordSection': 'addWordBtn',
+                'dailyWordsSection': 'dailyWordsBtn',
+                'reviewSection': 'reviewBtn',
+                'recentWordsSection': 'recentWordsBtn',
+                'allWordsSection': 'allWordsBtn'
+            };
+            
+            const sectionId = sectionMap[savedSection] || 'addWordSection';
+            const navBtnId = navBtnMap[sectionId];
+            
+            // Set initial active states
+            document.getElementById(sectionId).classList.add('active');
+            document.getElementById(navBtnId).classList.add('active');
+        })();
+    </script>
     <script src="app.js"></script>
 </body>
 </html>

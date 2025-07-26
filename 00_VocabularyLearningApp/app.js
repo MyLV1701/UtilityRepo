@@ -1,13 +1,13 @@
 class JapaneseVocabularyApp {
     constructor() {
         this.words = this.loadWords();
-        this.currentSection = 'addWord';
+        this.currentSection = this.loadCurrentSection();
         this.currentFrequency = 'high';
         this.dailyWordsDate = this.getTodayDate();
         this.dailyWords = this.loadDailyWords();
         
         this.initializeEventListeners();
-        this.showSection('addWordSection');
+        this.loadInitialContent();
     }
 
     // Data Management
@@ -43,6 +43,45 @@ class JapaneseVocabularyApp {
         return new Date().toDateString();
     }
 
+    loadCurrentSection() {
+        const savedSection = localStorage.getItem('currentSection');
+        return savedSection || 'addWord';
+    }
+
+    saveCurrentSection() {
+        localStorage.setItem('currentSection', this.currentSection);
+    }
+
+    getSectionId(sectionName) {
+        const sectionMap = {
+            'addWord': 'addWordSection',
+            'dailyWords': 'dailyWordsSection',
+            'review': 'reviewSection',
+            'recentWords': 'recentWordsSection',
+            'allWords': 'allWordsSection'
+        };
+        return sectionMap[sectionName] || 'addWordSection';
+    }
+
+    loadInitialContent() {
+        // Load content for the initially active section without UI transitions
+        const sectionId = this.getSectionId(this.currentSection);
+        switch(sectionId) {
+            case 'dailyWordsSection':
+                this.displayDailyWords();
+                break;
+            case 'reviewSection':
+                this.displayReviewWords();
+                break;
+            case 'recentWordsSection':
+                this.displayRecentWords();
+                break;
+            case 'allWordsSection':
+                this.displayAllWords();
+                break;
+        }
+    }
+
     // Event Listeners
     initializeEventListeners() {
         // Navigation
@@ -76,8 +115,12 @@ class JapaneseVocabularyApp {
             if (e.target.classList.contains('word-vocabulary')) {
                 const wordCard = e.target.closest('.word-card');
                 if (wordCard) {
-                    const wordId = wordCard.getAttribute('data-word-id');
-                    this.toggleWordDetails(wordId);
+                    this.toggleWordFlip(wordCard);
+                }
+            } else if (e.target.classList.contains('word-pronunciation') || e.target.classList.contains('word-meaning')) {
+                const wordCard = e.target.closest('.word-card');
+                if (wordCard) {
+                    this.toggleWordFlip(wordCard);
                 }
             }
         });
@@ -102,6 +145,17 @@ class JapaneseVocabularyApp {
         };
         
         document.getElementById(navBtnMap[sectionId]).classList.add('active');
+
+        // Save current section
+        const sectionNameMap = {
+            'addWordSection': 'addWord',
+            'dailyWordsSection': 'dailyWords',
+            'reviewSection': 'review',
+            'recentWordsSection': 'recentWords',
+            'allWordsSection': 'allWords'
+        };
+        this.currentSection = sectionNameMap[sectionId];
+        this.saveCurrentSection();
 
         // Load content for the section
         switch(sectionId) {
@@ -491,14 +545,11 @@ class JapaneseVocabularyApp {
     }
 
     // Word Card Interaction
-    toggleWordDetails(wordId) {
-        const detailsElement = document.getElementById(`details-${wordId}`);
-        if (detailsElement) {
-            if (detailsElement.style.display === 'none') {
-                detailsElement.style.display = 'block';
-            } else {
-                detailsElement.style.display = 'none';
-            }
+    toggleWordFlip(wordCard) {
+        if (wordCard.classList.contains('flipped')) {
+            wordCard.classList.remove('flipped');
+        } else {
+            wordCard.classList.add('flipped');
         }
     }
 
@@ -675,14 +726,19 @@ class JapaneseVocabularyApp {
     createWordCard(word, isDailyView = false) {
         return `
             <div class="word-card" data-word-id="${word.id}">
-                <div class="word-vocabulary">${this.escapeHTML(word.vocabulary)}</div>
-                <div class="word-details" id="details-${word.id}" style="display: none;">
-                    <div class="word-pronunciation">${this.escapeHTML(word.pronunciation)}</div>
-                    <div class="word-meaning">${this.escapeHTML(word.meaning)}</div>
-                </div>
-                <div class="word-actions">
-                    ${this.createFrequencyButtons(word, isDailyView)}
-                    <button class="delete-btn" onclick="app.deleteWord(${word.id})">Delete</button>
+                <div class="word-card-inner">
+                    <div class="word-card-front">
+                        <div class="word-vocabulary">${this.escapeHTML(word.vocabulary)}</div>
+                        <div class="word-actions">
+                            ${this.createFrequencyButtons(word, isDailyView)}
+                            <button class="edit-btn" onclick="app.editWord(${word.id})">Edit</button>
+                            <button class="delete-btn" onclick="app.deleteWord(${word.id})">Delete</button>
+                        </div>
+                    </div>
+                    <div class="word-card-back">
+                        <div class="word-pronunciation">${this.escapeHTML(word.pronunciation)}</div>
+                        <div class="word-meaning">${this.escapeHTML(word.meaning)}</div>
+                    </div>
                 </div>
             </div>
         `;
@@ -762,6 +818,113 @@ class JapaneseVocabularyApp {
                         break;
                 }
         });
+    }
+
+    editWord(wordId) {
+        const word = this.words.find(w => w.id === wordId);
+        if (!word) return;
+
+        const wordCard = document.querySelector(`[data-word-id="${wordId}"]`);
+        if (!wordCard) return;
+
+        // Remove flip class if present
+        wordCard.classList.remove('flipped');
+
+        const cardInner = wordCard.querySelector('.word-card-inner');
+        const currentFront = wordCard.querySelector('.word-card-front');
+        const currentBack = wordCard.querySelector('.word-card-back');
+
+        const editForm = document.createElement('div');
+        editForm.className = 'edit-form';
+        editForm.innerHTML = `
+            <div class="edit-field">
+                <label>Vocabulary:</label>
+                <input type="text" id="edit-vocabulary-${wordId}" value="${this.escapeHTML(word.vocabulary)}">
+            </div>
+            <div class="edit-field">
+                <label>Pronunciation:</label>
+                <input type="text" id="edit-pronunciation-${wordId}" value="${this.escapeHTML(word.pronunciation)}">
+            </div>
+            <div class="edit-field">
+                <label>Meaning:</label>
+                <input type="text" id="edit-meaning-${wordId}" value="${this.escapeHTML(word.meaning)}">
+            </div>
+            <div class="edit-actions">
+                <button class="save-btn" onclick="app.saveWordEdit(${wordId})">Save</button>
+                <button class="cancel-btn" onclick="app.cancelWordEdit(${wordId})">Cancel</button>
+            </div>
+        `;
+
+        currentFront.style.display = 'none';
+        currentBack.style.display = 'none';
+        cardInner.appendChild(editForm);
+    }
+
+    saveWordEdit(wordId) {
+        const vocabularyInput = document.getElementById(`edit-vocabulary-${wordId}`);
+        const pronunciationInput = document.getElementById(`edit-pronunciation-${wordId}`);
+        const meaningInput = document.getElementById(`edit-meaning-${wordId}`);
+
+        const newVocabulary = vocabularyInput.value.trim();
+        const newPronunciation = pronunciationInput.value.trim();
+        const newMeaning = meaningInput.value.trim();
+
+        if (!newVocabulary || !newPronunciation || !newMeaning) {
+            this.showErrorMessage('All fields are required');
+            return;
+        }
+
+        const wordIndex = this.words.findIndex(w => w.id === wordId);
+        if (wordIndex !== -1) {
+            this.words[wordIndex].vocabulary = newVocabulary;
+            this.words[wordIndex].pronunciation = newPronunciation;
+            this.words[wordIndex].meaning = newMeaning;
+            this.saveWords();
+
+            const dailyWordIndex = this.dailyWords.findIndex(w => w.id === wordId);
+            if (dailyWordIndex !== -1) {
+                this.dailyWords[dailyWordIndex] = this.words[wordIndex];
+                this.saveDailyWords();
+            }
+
+            this.refreshCurrentView();
+            this.showSuccessMessage('Word updated successfully!');
+        }
+    }
+
+    cancelWordEdit(wordId) {
+        const wordCard = document.querySelector(`[data-word-id="${wordId}"]`);
+        if (!wordCard) return;
+
+        const cardInner = wordCard.querySelector('.word-card-inner');
+        const editForm = cardInner.querySelector('.edit-form');
+        const currentFront = wordCard.querySelector('.word-card-front');
+        const currentBack = wordCard.querySelector('.word-card-back');
+
+        if (editForm) {
+            cardInner.removeChild(editForm);
+        }
+
+        currentFront.style.display = 'flex';
+        currentBack.style.display = 'flex';
+    }
+
+    refreshCurrentView() {
+        const activeSection = document.querySelector('.section.active').id;
+        switch(activeSection) {
+            case 'dailyWordsSection':
+                this.displayDailyWords();
+                break;
+            case 'reviewSection':
+                this.displayReviewWords();
+                break;
+            case 'recentWordsSection':
+                this.displayRecentWords();
+                break;
+            case 'allWordsSection':
+                this.displayAllWords();
+                break;
+        }
     }
 }
 

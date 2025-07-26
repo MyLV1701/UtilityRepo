@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japanese Vocabulary Learning</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Vocabulary Learning</h1>
+            <nav>
+                <button id="addWordBtn" class="nav-btn active">Add Word</button>
+                <button id="dailyWordsBtn" class="nav-btn">Daily Words</button>
+                <button id="reviewBtn" class="nav-btn">Review</button>
+                <button id="recentWordsBtn" class="nav-btn">Recent Words</button>
+                <button id="allWordsBtn" class="nav-btn">All Words</button>
+                <button id="syncBtn" class="nav-btn sync-btn">⇅ Sync</button>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Add Word Section -->
+            <section id="addWordSection" class="section active">
+                <h2>Add New Vocabulary</h2>
+                <form id="vocabularyForm">
+                    <div class="form-group">
+                        <label for="vocabulary">Vocabulary (漢字/ひらがな):</label>
+                        <input type="text" id="vocabulary" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pronunciation">Pronunciation (ローマ字):</label>
+                        <input type="text" id="pronunciation" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="meaning">Meaning (English):</label>
+                        <input type="text" id="meaning" required>
+                    </div>
+                    <button type="submit">Add Word</button>
+                </form>
+            </section>
+
+            <!-- Daily Words Section -->
+            <section id="dailyWordsSection" class="section">
+                <h2>Today's Words (50 per day)</h2>
+                <div id="dailyWordsList" class="words-list"></div>
+                <button id="generateDailyWords">Generate Today's Words</button>
+            </section>
+
+            <!-- Review Section -->
+            <section id="reviewSection" class="section">
+                <h2>Review by Frequency</h2>
+                <div class="frequency-tabs">
+                    <button class="freq-tab active" data-freq="high">High Priority</button>
+                    <button class="freq-tab" data-freq="medium">Medium Priority</button>
+                    <button class="freq-tab" data-freq="low">Low Priority</button>
+                </div>
+                <div id="reviewWordsList" class="words-list"></div>
+            </section>
+
+            <!-- Recent Words Section -->
+            <section id="recentWordsSection" class="section">
+                <h2>Recent Words (Latest 30)</h2>
+                <div id="recentWordsList" class="words-list"></div>
+            </section>
+
+            <!-- All Words Section -->
+            <section id="allWordsSection" class="section">
+                <h2>All Vocabulary</h2>
+                <div class="controls-bar">
+                    <div class="search-bar">
+                        <input type="text" id="searchInput" placeholder="Search words...">
+                    </div>
+                    <div class="action-buttons">
+                        <button id="exportBtn" class="export-btn">Export Data</button>
+                        <button id="importBtn" class="import-btn">Import Data</button>
+                        <input type="file" id="importFile" accept=".md,.txt" style="display: none;">
+                        <button id="clearAllWordsBtn" class="clear-btn">Clear All Words</button>
+                    </div>
+                </div>
+                <div id="allWordsList" class="words-list"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -170,6 +170,10 @@ class JapaneseVocabularyApp {
 
     // Navigation
     showSection(sectionId) {
+        // Check if we're switching to a different section
+        const currentActiveSection = document.querySelector('.section.active');
+        const isNewSection = !currentActiveSection || currentActiveSection.id !== sectionId;
+        
         // Clean up any active edit forms before switching sections
         this.cancelAllActiveEdits();
         
@@ -209,27 +213,29 @@ class JapaneseVocabularyApp {
         this.currentSection = sectionNameMap[sectionId];
         this.saveCurrentSection();
 
-        // Small delay to ensure DOM cleanup is complete before loading new content
-        setTimeout(() => {
-            // Load content for the section
-            switch(sectionId) {
-                case 'dailyWordsSection':
-                    this.displayDailyWords();
-                    break;
-                case 'reviewSection':
-                    this.displayReviewWords();
-                    break;
-                case 'recentWordsSection':
-                    this.displayRecentWords();
-                    break;
-                case 'allWordsSection':
-                    this.displayAllWords();
-                    break;
-                case 'listsSection':
-                    this.displayLists();
-                    break;
-            }
-        }, 5);
+        // Only reload content if this is actually a new section (prevents interference with edit operations)
+        if (isNewSection) {
+            setTimeout(() => {
+                // Load content for the section
+                switch(sectionId) {
+                    case 'dailyWordsSection':
+                        this.displayDailyWords();
+                        break;
+                    case 'reviewSection':
+                        this.displayReviewWords();
+                        break;
+                    case 'recentWordsSection':
+                        this.displayRecentWords();
+                        break;
+                    case 'allWordsSection':
+                        this.displayAllWords();
+                        break;
+                    case 'listsSection':
+                        this.displayLists();
+                        break;
+                }
+            }, 5);
+        }
     }
 
     // Add Word Functionality

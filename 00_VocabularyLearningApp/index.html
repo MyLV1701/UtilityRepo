@@ -16,6 +16,7 @@
                 <button id="reviewBtn" class="nav-btn">Review</button>
                 <button id="recentWordsBtn" class="nav-btn">Recent Words</button>
                 <button id="allWordsBtn" class="nav-btn">All Words</button>
+                <button id="listsBtn" class="nav-btn">Lists</button>
                 <button id="syncBtn" class="nav-btn sync-btn">⇅ Sync</button>
             </nav>
         </header>
@@ -81,6 +82,36 @@
                 </div>
                 <div id="allWordsList" class="words-list"></div>
             </section>
+
+            <!-- Lists Section -->
+            <section id="listsSection" class="section">
+                <h2>Vocabulary Lists</h2>
+                <div class="lists-header">
+                    <div class="list-creation">
+                        <input type="text" id="newListName" placeholder="Enter list name...">
+                        <button id="createListBtn">Create List</button>
+                    </div>
+                    <div class="list-actions">
+                        <select id="listFilter">
+                            <option value="all">All Lists</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="listsContainer" class="lists-container">
+                    <div id="listsGrid" class="lists-grid"></div>
+                    <div id="selectedListView" class="selected-list-view" style="display: none;">
+                        <div class="list-view-header">
+                            <h3 id="listViewTitle"></h3>
+                            <div class="list-view-actions">
+                                <button id="backToListsBtn">← Back to Lists</button>
+                                <button id="editListNameBtn">Edit Name</button>
+                                <button id="deleteListBtn">Delete List</button>
+                            </div>
+                        </div>
+                        <div id="listWordsList" class="words-list"></div>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
@@ -93,14 +124,16 @@
                 'dailyWords': 'dailyWordsSection',
                 'review': 'reviewSection',
                 'recentWords': 'recentWordsSection',
-                'allWords': 'allWordsSection'
+                'allWords': 'allWordsSection',
+                'lists': 'listsSection'
             };
             const navBtnMap = {
                 'addWordSection': 'addWordBtn',
                 'dailyWordsSection': 'dailyWordsBtn',
                 'reviewSection': 'reviewBtn',
                 'recentWordsSection': 'recentWordsBtn',
-                'allWordsSection': 'allWordsBtn'
+                'allWordsSection': 'allWordsBtn',
+                'listsSection': 'listsBtn'
             };
             
             const sectionId = sectionMap[savedSection] || 'addWordSection';

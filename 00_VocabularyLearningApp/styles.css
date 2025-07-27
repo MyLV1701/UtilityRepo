@@ -263,11 +263,55 @@ button[type="submit"]:hover, #generateDailyWords:hover {
     transform: translateY(-1px);
 }
 
-.freq-tab.active {
-    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+.freq-tab[data-freq="high"] {
+    border-color: #fc8181;
+    color: #c53030;
+}
+
+.freq-tab[data-freq="high"]:hover {
+    border-color: #f56565;
+    background: #fed7d7;
+}
+
+.freq-tab[data-freq="high"].active {
+    background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);
     color: white;
+    border-color: #fc8181;
+    box-shadow: 0 4px 12px rgba(252, 129, 129, 0.3);
+}
+
+.freq-tab[data-freq="medium"] {
+    border-color: #f6ad55;
+    color: #c05621;
+}
+
+.freq-tab[data-freq="medium"]:hover {
+    border-color: #ed8936;
+    background: #feebc8;
+}
+
+.freq-tab[data-freq="medium"].active {
+    background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%);
+    color: white;
+    border-color: #f6ad55;
+    box-shadow: 0 4px 12px rgba(246, 173, 85, 0.3);
+}
+
+.freq-tab[data-freq="low"] {
+    border-color: #68d391;
+    color: #276749;
+}
+
+.freq-tab[data-freq="low"]:hover {
     border-color: #48bb78;
-    box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+    background: #c6f6d5;
+}
+
+.freq-tab[data-freq="low"].active {
+    background: linear-gradient(135deg, #68d391 0%, #48bb78 100%);
+    color: white;
+    border-color: #68d391;
+    box-shadow: 0 4px 12px rgba(104, 211, 145, 0.3);
 }
 
 .sync-btn {

@@ -1019,8 +1019,8 @@ class JapaneseVocabularyApp {
                 <input type="text" id="edit-meaning-${wordId}" placeholder="Meaning" value="${this.escapeHTML(word.meaning)}">
             </div>
             <div class="edit-actions">
-                <button class="save-btn" onclick="app.saveWordEdit(${wordId})">✓</button>
-                <button class="cancel-btn" onclick="app.cancelWordEdit(${wordId})">✕</button>
+                <button class="save-btn" onclick="app.saveWordEdit(${wordId})">Save</button>
+                <button class="cancel-btn" onclick="app.cancelWordEdit(${wordId})">Cancel</button>
             </div>
         `;
 

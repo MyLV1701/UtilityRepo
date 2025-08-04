@@ -1,7 +1,39 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm start)"
+      "Bash(npm start)",
+      "Bash(mkdir:*)",
+      "Bash(dir)",
+      "Bash(gradlew.bat assembleDebug:*)",
+      "Bash(.gradlew.bat assembleDebug)",
+      "Bash(cmd /c:*)",
+      "Bash(powershell.exe:*)",
+      "Bash(java:*)",
+      "Bash(cp:*)",
+      "Bash(cmd.exe /c \"echo Starting Gradle build...\")",
+      "Bash(cmd.exe:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(gradlew.bat assembleRelease:*)",
+      "Bash(timeout:*)",
+      "Bash(export:*)",
+      "Bash(export PATH=\"$PATH:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/34.0.0\")",
+      "Bash(./gradlew.bat:*)",
+      "Bash(ANDROID_HOME=/c/Users/MyLV1/AppData/Local/Android/Sdk java -Dorg.gradle.appname=gradlew -classpath gradle/wrapper/gradle-wrapper.jar org.gradle.wrapper.GradleWrapperMain assembleRelease)",
+      "Bash(curl:*)",
+      "Bash(unzip:*)",
+      "Bash(mv:*)",
+      "Bash(ANDROID_HOME=/c/Users/MyLV1/AppData/Local/Android/Sdk JAVA_HOME=\"/c/Program Files/Common Files/Oracle/Java/javapath\" ./gradlew assembleRelease)",
+      "Bash(chmod:*)",
+      "Bash(ANDROID_HOME=/c/Users/MyLV1/AppData/Local/Android/Sdk ./gradlew assembleRelease --stacktrace)",
+      "Bash(dir:*)",
+      "Bash(del .\\NUL)",
+      "Bash(rm:*)",
+      "Bash(python:*)",
+      "Bash(node:*)",
+      "Bash(start index.html)",
+      "Bash(grep:*)",
+      "Bash(explorer:*)"
     ],
     "deny": []
   }

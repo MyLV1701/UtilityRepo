@@ -44,9 +44,18 @@
 
             <!-- Daily Words Section -->
             <section id="dailyWordsSection" class="section">
-                <h2>Today's Words (50 per day)</h2>
+                <h2>Daily Study Plan (50 words per day)</h2>
                 <div id="dailyWordsList" class="words-list"></div>
-                <button id="generateDailyWords">Generate Today's Words</button>
+                <button id="generateDailyWords">Generate Study Plan</button>
+                
+                <!-- Learning View -->
+                <div id="learningView" class="learning-view">
+                    <div class="learning-header">
+                        <h2 id="learningTitle" class="learning-title">Learning Session</h2>
+                        <button id="backToPlanBtn" class="back-to-plan-btn">← Back to Plan</button>
+                    </div>
+                    <div id="learningWords" class="learning-words"></div>
+                </div>
             </section>
 
             <!-- Review Section -->
@@ -144,6 +153,6 @@
             document.getElementById(navBtnId).classList.add('active');
         })();
     </script>
-    <script src="app.js?v=1.1"></script>
+    <script src="app.js"></script>
 </body>
 </html>
